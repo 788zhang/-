@@ -30,7 +30,7 @@
     
     //左
     
-    UIBarButtonItem *leftbtn=[[UIBarButtonItem alloc]initWithTitle:nil style:UIBarButtonItemStylePlain target:self action:@selector(selectCity)];
+    UIBarButtonItem *leftbtn=[[UIBarButtonItem alloc]initWithTitle:@"洛阳" style:UIBarButtonItemStylePlain target:self action:@selector(selectCity)];
     
     
     leftbtn.tintColor=[UIColor whiteColor];
