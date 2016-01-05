@@ -23,7 +23,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tj4-gS-ilp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1115.5" y="435.5"/>
+            <point key="canvasLocation" x="908.5" y="434.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="MPY-yf-csV">
@@ -34,6 +34,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="J63-RP-X96">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.0" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>

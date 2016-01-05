@@ -33,7 +33,7 @@
     
     UINavigationController *mainNav=mainStoryboard.instantiateInitialViewController;
     //导航栏颜色
-    mainNav.navigationBar.barTintColor = [UIColor colorWithRed:27/255.0f green:185/255.0f blue:189/255.0f alpha:1.0];
+    mainNav.navigationBar.barTintColor = [UIColor colorWithRed:96/255.0f green:185/255.0f blue:191/255.0f alpha:1.0];
     
     //mainNav.tabBarItem.title=@"主页";
     mainNav.tabBarItem.image=[UIImage imageNamed:@"ft_home_normal_ic"];
@@ -51,6 +51,10 @@
     
     UIStoryboard *discoverbd=[UIStoryboard storyboardWithName:@"DiscoverStoryboard" bundle:nil];
     UINavigationController *discoverNav=discoverbd.instantiateInitialViewController;
+    
+//    discoverNav.navigationBar.tintColor=[UIColor colorWithRed:96/255.0f green:185/255.0f blue:191/255.0f alpha:1.0];
+//    
+    
    // discoverNav.tabBarItem.title=@"发现";
     discoverNav.tabBarItem.image=[UIImage imageNamed:@"ft_found_normal_ic"];
     UIImage *disimage=[UIImage imageNamed:@"ft_found_selected_ic"];

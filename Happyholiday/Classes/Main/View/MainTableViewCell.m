@@ -7,7 +7,7 @@
 //
 
 #import "MainTableViewCell.h"
-
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface MainTableViewCell ()
 //活动图片
@@ -24,8 +24,30 @@
 
 @end
 
-
 @implementation MainTableViewCell
+
+
+
+
+
+
+
+//setter
+- (void)setModel:(MainModel *)model{
+    
+    [self.activityPicture sd_setImageWithURL:[NSURL URLWithString:model.image_big] placeholderImage:nil];
+    
+    
+    self.activityNameLable.text=model.title;
+    self.activityPriceLable.text=model.price;
+
+    
+    
+    
+}
+
+
+
 
 - (void)awakeFromNib {
     // Initialization code
