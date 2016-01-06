@@ -26,7 +26,7 @@
 
 
 
-@interface MainViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface MainViewController ()<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 //strong
 @property(nonatomic, strong) NSMutableArray *listAllArr;
@@ -34,9 +34,17 @@
 @property(nonatomic, strong) NSMutableArray *activityArr;
 @property(nonatomic, strong) NSMutableArray *themeArr;
 
+@property(nonatomic, strong) UIScrollView *scrollView;
+@property(nonatomic, strong) UIPageControl *pageControll;
+
+//定时器，用于图片滚动播放
+@property(nonatomic, strong) NSTimer *timer;
+
+
 @end
 
 @implementation MainViewController
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -74,12 +82,29 @@
     [self configTableViewheadView];
     
     
+    //启动定时器
+    
+    [self startTimer];
     
     
 }
 
 
 #pragma mark --- 导航栏按钮方法
+
+
+//实现代理方法
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView{
+    
+    NSLog(@"%@",scrollView);
+    
+    UIImageView *imageview=(UIImageView *)[scrollView viewWithTag:110];
+    return imageview;
+    
+    //    //在scrollview上通过tag值寻找imageview
+    //    return [scrollView viewWithTag:0];
+    
+}
 
 
 - (void)selectCity{
@@ -101,9 +126,130 @@
     
     
 }
+#pragma mark ----首页轮播图的方法
+
+//轮播图定时器方法
+-(void)startTimer{
+    
+    //防止定时器重复创建
+    if (self.timer != nil) {
+        return;
+    }
+    
+    self.timer=[NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(rollAnimation) userInfo:nil repeats:YES];
+    
+    // 添加到运行循环
+    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+
+    
+}
+
+//每两秒执行一次
+-(void)rollAnimation{
+
+    
+    NSInteger page=self.pageControll.currentPage+1 ;
+    
+    NSInteger curentPage = page % self.advertisementArray.count;
+  
+      self.pageControll.currentPage = curentPage;
+    
+    // 根据页数，调整滚动视图中的图片位置 contentOffset
+    CGFloat x = self.pageControll.currentPage * KScreenWidth;
+    [self.scrollView setContentOffset:CGPointMake(x, 0) animated:YES];
+    
+    
+    
+}
+//当手动去滑动Scroller的时候，定时器依然在计算时间，可能我们刚刚滑动到下一页，定时器时间又刚好触发，导致在当前页停留时间不到2秒
+//解决方案在scroller开始移动的时候结束定时器
+//在scroller结束的时候启动定时器
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
+    
+    
+    //停止计时器
+    
+    [self.timer invalidate];
+    
+    self.timer =nil;//
+    
+    
+}
+
+
+
+
+
+
+
+
+
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    //第一步：获取scroller的页面宽度
+    
+    CGFloat pageWith=self.scrollView.frame.size.width;
+    //第二步：获取scroller的偏移量
+    
+    CGPoint offset=self.scrollView.contentOffset;
+    //第三步：通过偏移量和页面宽度计算出当前页
+    
+    NSInteger pageNumber=offset.x/pageWith;
+    self.pageControll.currentPage=pageNumber;
+    
+    
+    
+}
+
+
+-(void)pageSelecAction:(UIPageControl *)page{
+
+    
+    //第一步：获取pagecontrol点击的第几个页面
+    NSInteger num =  page.currentPage;
+    //第二步：获取页面的宽度：
+    CGFloat pageWidth=self.scrollView.frame.size.width;
+    //让scrollview滚动到第几页
+    self.scrollView.contentOffset=CGPointMake(num * pageWidth, 0);
+    
+
+    
+    
+
+}
+
 
 
 #pragma mark ----6个按钮的方法
+
+//轮播图的点击方法
+
+-(void)touchAdvertisement:(UIButton *)btn{
+    //从数组中的字典中
+    
+    NSString *type=self.advertisementArray[btn.tag-100][@"type"];
+    
+    
+    if ([type integerValue]==1) {
+        ActivityDetailViewController *activity=[[ActivityDetailViewController alloc]init];
+        activity.activityID=self.advertisementArray[btn.tag-100][@"id"];
+        
+        [self.navigationController pushViewController:activity animated:YES];
+    }else{
+        
+        
+        HotViewController *hot=[[HotViewController alloc]init];
+        
+        [self.navigationController pushViewController:hot animated:YES];
+        
+    }
+    
+    
+}
+
+
+
+
 
 
 -(void)clickbtn:(UIButton *)btn{
@@ -171,7 +317,61 @@
 
 
 
-#pragma mark ----数组属性的懒加载
+#pragma mark ----属性的懒加载
+
+- (UIScrollView *)scrollView{
+    
+    if (_scrollView == nil) {
+        
+        
+        //添加轮播图
+        self.scrollView=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, KScreenWidth, 186)];
+        
+        self.scrollView.delegate=self;
+        
+        self.scrollView.contentSize=CGSizeMake(self.advertisementArray.count*KScreenWidth, 186);
+        
+        
+        //整平滑动
+        self.scrollView.pagingEnabled=YES;
+        //不显示水平方向滚动条
+        self.scrollView.showsHorizontalScrollIndicator=NO;
+
+        
+    }
+    
+    
+    return _scrollView;
+}
+
+
+
+- (UIPageControl *)pageControll{
+    
+    if (_pageControll == nil) {
+        
+        //创建小原点
+        
+        self.pageControll=[[UIPageControl alloc]initWithFrame:CGRectMake(0, 186-30, KScreenWidth, 30)];
+        
+       
+        
+        self.pageControll.currentPageIndicatorTintColor=[UIColor redColor];
+        [self.pageControll addTarget:self action:@selector(pageSelecAction:) forControlEvents:UIControlEventValueChanged];
+        
+        
+    }
+    
+    return _pageControll;
+}
+
+
+
+
+
+
+
+
 
 - (NSMutableArray *)listAllArr{
     
@@ -229,9 +429,9 @@
     sessionManager.responseSerializer.acceptableContentTypes=[NSSet setWithObject:@"text/html"];
     
     [sessionManager GET:urlstring parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
-         ZPFLog(@"%lld",downloadProgress.totalUnitCount);
+        // ZPFLog(@"%lld",downloadProgress.totalUnitCount);
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-       ZPFLog(@"%@",responseObject);
+       //ZPFLog(@"%@",responseObject);
         
         
         
@@ -248,7 +448,11 @@
             NSArray *adDataArr=dic[@"adData"];
             
             for (NSDictionary *dic in adDataArr) {
-                [self.advertisementArray addObject:dic[@"url"]];
+                
+                NSDictionary *dic1=@{@"url":dic[@"url"],@"type":dic[@"type"],@"id":dic[@"id"]};
+                [self.advertisementArray addObject:dic1];
+                
+//                [self.advertisementArray addObject:dic[@"url"]];
             }
             
             [self configTableViewheadView];
@@ -257,14 +461,8 @@
             //已请求回来的城市作为导航栏按钮标题
             self.navigationItem.leftBarButtonItem.title=cityname;
             
-            for (NSDictionary  *adDic  in adDataArr) {
-                
-                MainModel *model=[[MainModel alloc]initWithDic:adDic];
-                
-                [self.advertisementArray addObject:model];
-                
-                
-            }
+
+            
             //推荐活动
             NSArray *acDataArr=dic[@"acData"];
             
@@ -317,35 +515,39 @@
 -(void)configTableViewheadView{
     
     UIView *view=[[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 343)];
-//    
-//    view.backgroundColor=[UIColor redColor];
+
     
-    //添加轮播图
-    UIScrollView *scrollView=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, KScreenWidth, 186)];
     
-   
+    [view addSubview:self.scrollView];
     
-    scrollView.contentSize=CGSizeMake(self.advertisementArray.count*KScreenWidth, 186);
-    
+    [view addSubview:self.pageControll];
+
+     self.pageControll.numberOfPages=self.advertisementArray.count;
     
     for (int i=0; i<self.advertisementArray.count; i++) {
        
         UIImageView *imageView=[[UIImageView alloc]initWithFrame:CGRectMake(KScreenWidth*i, 0, KScreenWidth, 186)];
-     
+        [imageView sd_setImageWithURL:[NSURL URLWithString:self.advertisementArray[i][@"url"]] placeholderImage:nil];
+        imageView.userInteractionEnabled=YES;
+        
+        [self.scrollView addSubview:imageView];
         
         
-        [imageView sd_setImageWithURL:[NSURL URLWithString:self.advertisementArray[i]] placeholderImage:nil];
+        
+        UIButton *touchBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+        touchBtn.frame=imageView.frame;
+        touchBtn.tag=100+i;
+        
+        [touchBtn addTarget:self action:@selector(touchAdvertisement:) forControlEvents:UIControlEventTouchUpInside];
         
         
-        [scrollView addSubview:imageView];
+        [self.scrollView addSubview:touchBtn];
+        
+        
         
         
         
     }
-    
-    
-    
-    [view addSubview:scrollView];
     
     
     
