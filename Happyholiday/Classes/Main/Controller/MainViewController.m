@@ -11,6 +11,20 @@
 #import "MainModel.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <AFNetworking/AFHTTPSessionManager.h>
+#import "SelectCityViewController.h"
+#import "SearchViewController.h"
+#import "ActivityDetailViewController.h"
+#import "ThemeViewController.h"
+//分类列表
+#import "ClassifyViewController.h"
+
+//精选
+#import "GoodActivityViewController.h"
+
+//热门
+#import "HotViewController.h"
+
+
 
 @interface MainViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -70,6 +84,10 @@
 
 - (void)selectCity{
  
+    SelectCityViewController *select=[[SelectCityViewController alloc]init];
+    
+    //模态退出
+    [self.navigationController presentViewController:select animated:YES completion:nil];
     
     
     
@@ -77,82 +95,10 @@
 
 -(void)seachActivity{
     
+    SearchViewController *search=[[SearchViewController alloc]init];
     
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURL *URL = [NSURL URLWithString:@"http://e.kumi.cn/app/v1.3/index.php?_s_=02a411494fa910f5177d82a6b0a63788&_t_=1451307342&channelid=appstore&cityid=1&lat=34.62172291944134&limit=30&lng=112.4149512442411&page=1"];
-   
-    AFHTTPSessionManager *managerhttp=[[AFHTTPSessionManager alloc]initWithBaseURL:URL sessionConfiguration:configuration];
-
-    NSURLSessionDataTask *a=[managerhttp GET:@"http://e.kumi.cn/app/v1.3/index.php?_s_=02a411494fa910f5177d82a6b0a63788&_t_=1451307342&channelid=appstore&cityid=1&lat=34.62172291944134&limit=30&lng=112.4149512442411&page=1" parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
-        NSLog(@"%@",downloadProgress);
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"%@",responseObject);
-        
-        NSDictionary *resuleDic=responseObject;
-        
-        NSString *status=resuleDic[@"status"];
-        NSInteger code=[resuleDic[@"code"] integerValue];
-        
-        if ([status isEqualToString:@"success"] &&code == 0) {
-            NSDictionary *dic=resuleDic[@"success"];
-            //广告adData
-            NSArray *adDataArr=dic[@"adData"];
-           
-            
-            NSString *cityname=dic[@"cityname"];
-            //已请求回来的城市作为导航栏按钮标题
-            self.navigationItem.leftBarButtonItem.title=cityname;
-           
-            for (NSDictionary  *adDic  in adDataArr) {
-                
-                MainModel *model=[[MainModel alloc]initWithDic:adDic];
-                
-                [self.advertisementArray addObject:model];
-                
-                
-            }
-            //推荐活动
-            NSArray *acDataArr=dic[@"acData"];
-
-            for (NSDictionary *dic in acDataArr ) {
-                
-                MainModel *model=[[MainModel alloc]initWithDic:dic];
-                
-                
-                [self.activityArr addObject:model];
-                
-            }
-            
-            
-          //推荐专题
-            NSArray *rcDataArr=dic[@"rcData"];
-            
-            
-            for (NSDictionary *dic in rcDataArr ) {
-                
-                MainModel *model=[[MainModel alloc]initWithDic:dic];
-                
-                
-                [self.themeArr addObject:model];
-                
-            }
-
-            
-            
-        }
-        
-        
-        [self.listAllArr addObject:self.activityArr];
-
-        [self.listAllArr addObject:self.themeArr];
-        
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"%@",error);
-    }];
+    [self.navigationController presentViewController:search animated:YES completion:nil];
     
-    
-    [a resume];
     
 }
 
@@ -166,20 +112,56 @@
     
     if (btn.tag == 1) {
         
+        ClassifyViewController *class=[[ClassifyViewController alloc]init];
+        
+        
+        [self.navigationController pushViewController:class animated:YES];
+        
+        
+        
+        
     }
     if (btn.tag == 2) {
         
+        
+        ClassifyViewController *class=[[ClassifyViewController alloc]init];
+        
+        
+        [self.navigationController pushViewController:class animated:YES];
     }
     if (btn.tag == 3) {
         
+        
+        ClassifyViewController *class=[[ClassifyViewController alloc]init];
+        
+        
+        [self.navigationController pushViewController:class animated:YES];
     }
     if (btn.tag == 4) {
         
+        
+        ClassifyViewController *class=[[ClassifyViewController alloc]init];
+        
+        
+        [self.navigationController pushViewController:class animated:YES];
     }
     if (btn.tag == 5) {
         
+        GoodActivityViewController *good=[[GoodActivityViewController alloc]init];
+        
+        [self.navigationController pushViewController:good animated:YES];
+        
+        
+        
     }
     if (btn.tag == 6) {
+        
+        
+        HotViewController *hot=[[HotViewController alloc]init];
+        
+        [self.navigationController pushViewController:hot animated:YES];
+        
+        
         
     }
   
@@ -239,7 +221,7 @@
     
     
     
-    NSString *urlstring=@"http://e.kumi.cn/app/v1.3/index.php?_s_=02a411494fa910f5177d82a6b0a63788&_t_=1451307342&channelid=appstore&cityid=1&lat=34.62172291944134&limit=30&lng=112.4149512442411&page=1";
+    NSString *urlstring=kMainDataInterface;
     
     
     AFHTTPSessionManager  *sessionManager=[AFHTTPSessionManager manager];
@@ -247,9 +229,9 @@
     sessionManager.responseSerializer.acceptableContentTypes=[NSSet setWithObject:@"text/html"];
     
     [sessionManager GET:urlstring parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
-         NSLog(@"%lld",downloadProgress.totalUnitCount);
+         ZPFLog(@"%lld",downloadProgress.totalUnitCount);
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"%@",responseObject);
+       ZPFLog(@"%@",responseObject);
         
         
         
@@ -324,7 +306,7 @@
         
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-         NSLog(@"%@",error);
+         ZPFLog(@"%@",error);
     }];
     
     
@@ -339,16 +321,16 @@
 //    view.backgroundColor=[UIColor redColor];
     
     //添加轮播图
-    UIScrollView *scrollView=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 186)];
+    UIScrollView *scrollView=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, KScreenWidth, 186)];
     
    
     
-    scrollView.contentSize=CGSizeMake(self.advertisementArray.count*[UIScreen mainScreen].bounds.size.width, 186);
+    scrollView.contentSize=CGSizeMake(self.advertisementArray.count*KScreenWidth, 186);
     
     
     for (int i=0; i<self.advertisementArray.count; i++) {
        
-        UIImageView *imageView=[[UIImageView alloc]initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width*i, 0, [UIScreen mainScreen].bounds.size.width, 186)];
+        UIImageView *imageView=[[UIImageView alloc]initWithFrame:CGRectMake(KScreenWidth*i, 0, KScreenWidth, 186)];
      
         
         
@@ -377,7 +359,7 @@
     
     for (int i=0; i<4; i++) {
         UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
-        btn.frame=CGRectMake(i*[UIScreen mainScreen].bounds.size.width/4, 186, [UIScreen mainScreen].bounds.size.width/4, [UIScreen mainScreen].bounds.size.width/4);
+        btn.frame=CGRectMake(i*KScreenWidth/4, 186, KScreenWidth/4, KScreenWidth/4);
         
         NSString *imgStr=[NSString stringWithFormat:@"home_icon_0%d",i+1];
         [btn setImage:[UIImage imageNamed:imgStr] forState:UIControlStateNormal];
@@ -393,12 +375,12 @@
         
         
         UIButton *selecteBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-        selecteBtn.frame=CGRectMake(0,262, [UIScreen mainScreen].bounds.size.width/2, [UIScreen mainScreen].bounds.size.width/4);
+        selecteBtn.frame=CGRectMake(0,262, KScreenWidth/2, KScreenWidth/4);
         
       
         [selecteBtn setImage:[UIImage imageNamed:@"home_huodong"] forState:UIControlStateNormal];
         
-        selecteBtn.tag=6;
+        selecteBtn.tag=5;
         
         
         [selecteBtn addTarget:self action:@selector(clickbtn:) forControlEvents:UIControlEventTouchUpInside];
@@ -408,12 +390,12 @@
         
         
         UIButton *selecteBtn1=[UIButton buttonWithType:UIButtonTypeCustom];
-        selecteBtn1.frame=CGRectMake([UIScreen mainScreen].bounds.size.width/2,262, [UIScreen mainScreen].bounds.size.width/2, [UIScreen mainScreen].bounds.size.width/4);
+        selecteBtn1.frame=CGRectMake(KScreenWidth/2,262, KScreenWidth/2, KScreenWidth/4);
         
         
         [selecteBtn1 setImage:[UIImage imageNamed:@"home_zhuanti"] forState:UIControlStateNormal];
         
-        selecteBtn1.tag=7;
+        selecteBtn1.tag=6;
         
         
         [selecteBtn1 addTarget:self action:@selector(clickbtn:) forControlEvents:UIControlEventTouchUpInside];
@@ -461,6 +443,33 @@
     
 }
 
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    
+    if (indexPath.section == 0) {
+        //推荐活动
+        ActivityDetailViewController *activity=[[ActivityDetailViewController alloc]init];
+        
+        
+        [self.navigationController pushViewController:activity animated:YES];
+        
+        
+    }else{
+        
+        
+        ThemeViewController *them=[[ThemeViewController alloc]init];
+        
+        [self.navigationController pushViewController:them animated:YES];
+        
+    }
+    
+    
+    
+    
+}
+
+
 #pragma mark ----UITableViewDelegate
 
 
@@ -495,7 +504,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView *view=[[UIView alloc]init];
    
-    UIImageView *imageView=[[UIImageView alloc]initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width/2-160, 5,320 , 16)];
+    UIImageView *imageView=[[UIImageView alloc]initWithFrame:CGRectMake(KScreenWidth/2-160, 5,320 , 16)];
    
     if (section == 0) {
         

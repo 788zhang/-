@@ -36,12 +36,20 @@
 - (void)setModel:(MainModel *)model{
     
     [self.activityPicture sd_setImageWithURL:[NSURL URLWithString:model.image_big] placeholderImage:nil];
-    
-    
     self.activityNameLable.text=model.title;
     self.activityPriceLable.text=model.price;
-
-    
+    //推荐活动。显示
+    if ([model.type integerValue]==RecommendTypeActivity) {
+        
+        self.activityDistanceBtn.hidden=NO;
+        
+        
+    }else {
+        
+        self.activityDistanceBtn.hidden=YES;
+        
+        
+    }
     
     
 }

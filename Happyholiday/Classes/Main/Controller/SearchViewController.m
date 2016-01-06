@@ -1,25 +1,25 @@
 //
-//  DiscoverViewController.m
-//  
+//  SearchViewController.m
+//  Happyholiday
 //
-//  Created by scjy on 16/1/4.
-//
+//  Created by scjy on 16/1/6.
+//  Copyright © 2016年 scjy. All rights reserved.
 //
 
-#import "DiscoverViewController.h"
+#import "SearchViewController.h"
 
-@interface DiscoverViewController ()
+@interface SearchViewController ()
 
 @end
 
-@implementation DiscoverViewController
+@implementation SearchViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.navigationItem.title=@"搜索";
     
-   
     
 }
 

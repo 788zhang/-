@@ -1,26 +1,22 @@
 //
-//  DiscoverViewController.m
-//  
+//  ClassifyViewController.m
+//  Happyholiday
 //
-//  Created by scjy on 16/1/4.
-//
+//  Created by scjy on 16/1/6.
+//  Copyright © 2016年 scjy. All rights reserved.
 //
 
-#import "DiscoverViewController.h"
+#import "ClassifyViewController.h"
 
-@interface DiscoverViewController ()
+@interface ClassifyViewController ()
 
 @end
 
-@implementation DiscoverViewController
+@implementation ClassifyViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    
-   
-    
 }
 
 - (void)didReceiveMemoryWarning {

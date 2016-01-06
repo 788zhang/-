@@ -1,26 +1,22 @@
 //
-//  DiscoverViewController.m
-//  
+//  ThemeViewController.m
+//  Happyholiday
 //
-//  Created by scjy on 16/1/4.
-//
+//  Created by scjy on 16/1/6.
+//  Copyright © 2016年 scjy. All rights reserved.
 //
 
-#import "DiscoverViewController.h"
+#import "ThemeViewController.h"
 
-@interface DiscoverViewController ()
+@interface ThemeViewController ()
 
 @end
 
-@implementation DiscoverViewController
+@implementation ThemeViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    
-   
-    
 }
 
 - (void)didReceiveMemoryWarning {

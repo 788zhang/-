@@ -1,26 +1,22 @@
 //
-//  DiscoverViewController.m
-//  
+//  ActivityDetailViewController.m
+//  Happyholiday
 //
-//  Created by scjy on 16/1/4.
-//
+//  Created by scjy on 16/1/6.
+//  Copyright © 2016年 scjy. All rights reserved.
 //
 
-#import "DiscoverViewController.h"
+#import "ActivityDetailViewController.h"
 
-@interface DiscoverViewController ()
+@interface ActivityDetailViewController ()
 
 @end
 
-@implementation DiscoverViewController
+@implementation ActivityDetailViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    
-   
-    
 }
 
 - (void)didReceiveMemoryWarning {

@@ -23,9 +23,10 @@
                         <color key="textColor" red="1" green="0.62809072339290328" blue="0.096348872679911324" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JS0-Ru-wDM">
-                        <rect key="frame" x="263" y="171" width="112" height="30"/>
-                        <state key="normal" title="Button">
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JS0-Ru-wDM">
+                        <rect key="frame" x="263" y="175" width="112" height="22"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <state key="normal" title="  655km" image="pos">
                             <color key="titleColor" red="0.28507733585858586" green="0.23217250806919279" blue="0.11580093643218317" alpha="1" colorSpace="calibratedRGB"/>
                         </state>
                     </button>
@@ -44,7 +45,10 @@
                 <outlet property="activityPicture" destination="waa-Ru-FM1" id="cJj-DM-8oG"/>
                 <outlet property="activityPriceLable" destination="G0e-mo-g9h" id="iZE-1Q-8h8"/>
             </connections>
-            <point key="canvasLocation" x="385.5" y="191.5"/>
+            <point key="canvasLocation" x="507.5" y="199.5"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="pos" width="12" height="15"/>
+    </resources>
 </document>

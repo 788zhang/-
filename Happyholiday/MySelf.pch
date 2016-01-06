@@ -1,0 +1,30 @@
+//
+//  MySelf.pch
+//  Happyholiday
+//
+//  Created by scjy on 16/1/6.
+//  Copyright © 2016年 scjy. All rights reserved.
+///Users/scjy/Desktop/iOS 项目程序/工程项目期/happyholiday/Happyholiday/MySelf.pch
+
+#ifndef MySelf_pch
+#define MySelf_pch
+
+#import "HDWDefine.h"
+
+#define KScreenWidth  [UIScreen mainScreen].bounds.size.width
+#define KScreenHeight [UIScreen mainScreen].bounds.size.height
+
+//输出
+#ifdef DEBUG
+#	define ZPFLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#else
+#	define ZPFLog(...)
+#endif
+
+//
+
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* MySelf_pch */
