@@ -8,8 +8,16 @@
 
 #ifndef MySelf_pch
 #define MySelf_pch
-
+//接口定义的头文件
 #import "HWDefine.h"
+//自定义的工具类
+#import "HWTools.h"
+//uiView的延展
+#import "UIView+Extesion.h"
+
+#import <UIImageView+WebCache.h>
+#import <AFHTTPSessionManager.h>
+
 
 #define KScreenWidth  [UIScreen mainScreen].bounds.size.width
 #define KScreenHeight [UIScreen mainScreen].bounds.size.height

@@ -13,6 +13,8 @@
 
 @interface AppDelegate ()
 
+
+
 @end
 
 @implementation AppDelegate
@@ -23,9 +25,9 @@
     // Override point for customization after application launch.
     
     //创建一个 UITabBarController
-    UITabBarController *tabbar=[[UITabBarController alloc]init];
+     self.tabbar=[[UITabBarController alloc]init];
     
-    
+   
     //创建被tabbar控制的视图控制器
     
     //主页
@@ -83,14 +85,14 @@
     
     
     
-    tabbar.viewControllers=@[mainNav,discoverNav,mineNav];
+     self.tabbar.viewControllers=@[mainNav,discoverNav,mineNav];
     
-    tabbar.tabBar.backgroundColor=[UIColor whiteColor];
+     self.tabbar.tabBar.backgroundColor=[UIColor whiteColor];
 
     
     
     
-    self.window.rootViewController=tabbar;
+    self.window.rootViewController= self.tabbar;
     
     
     

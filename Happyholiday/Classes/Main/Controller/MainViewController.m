@@ -9,12 +9,13 @@
 #import "MainViewController.h"
 #import "MainTableViewCell.h"
 #import "MainModel.h"
-#import <SDWebImage/UIImageView+WebCache.h>
-#import <AFNetworking/AFHTTPSessionManager.h>
+//#import <SDWebImage/UIImageView+WebCache.h>
+//#import <AFNetworking/AFHTTPSessionManager.h>
 #import "SelectCityViewController.h"
 #import "SearchViewController.h"
 #import "ActivityDetailViewController.h"
 #import "ThemeViewController.h"
+
 //分类列表
 #import "ClassifyViewController.h"
 
@@ -46,11 +47,13 @@
 @implementation MainViewController
 
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    //左
+    
+      //左
     
     UIBarButtonItem *leftbtn=[[UIBarButtonItem alloc]initWithTitle:@"洛阳" style:UIBarButtonItemStylePlain target:self action:@selector(selectCity)];
     
@@ -72,6 +75,7 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:@"MainTableViewCell" bundle:nil] forCellReuseIdentifier:@"cell"];
     
+    self.tableView.showsVerticalScrollIndicator=NO;
     
     
 //    //请求网络数据
@@ -122,8 +126,7 @@
     
     SearchViewController *search=[[SearchViewController alloc]init];
     
-    [self.navigationController presentViewController:search animated:YES completion:nil];
-    
+    [self.navigationController pushViewController:search animated:YES];
     
 }
 #pragma mark ----首页轮播图的方法
@@ -149,14 +152,21 @@
 
     
     NSInteger page=self.pageControll.currentPage+1 ;
-    
-    NSInteger curentPage = page % self.advertisementArray.count;
-  
-      self.pageControll.currentPage = curentPage;
-    
-    // 根据页数，调整滚动视图中的图片位置 contentOffset
-    CGFloat x = self.pageControll.currentPage * KScreenWidth;
-    [self.scrollView setContentOffset:CGPointMake(x, 0) animated:YES];
+    // count 》0  是防止数组为0，导致程序崩溃
+    if (self.advertisementArray.count>0) {
+        
+        
+        NSInteger curentPage = page % self.advertisementArray.count;
+        
+        self.pageControll.currentPage = curentPage;
+        
+        // 根据页数，调整滚动视图中的图片位置 contentOffset
+        CGFloat x = self.pageControll.currentPage * KScreenWidth;
+        [self.scrollView setContentOffset:CGPointMake(x, 0) animated:YES];
+        
+
+        
+    }
     
     
     
@@ -231,16 +241,34 @@
     
     
     if ([type integerValue]==1) {
-        ActivityDetailViewController *activity=[[ActivityDetailViewController alloc]init];
+        
+        UIStoryboard *mainSB=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        
+        
+        
+        
+        ActivityDetailViewController *activity=[mainSB instantiateViewControllerWithIdentifier:@"ActivityDetail"];
+        
+        
+        
+        
         activity.activityID=self.advertisementArray[btn.tag-100][@"id"];
+        
+        
+        
         
         [self.navigationController pushViewController:activity animated:YES];
     }else{
         
         
-        HotViewController *hot=[[HotViewController alloc]init];
+        ThemeViewController *them=[[ThemeViewController alloc]init];
         
-        [self.navigationController pushViewController:hot animated:YES];
+        them.themId=self.advertisementArray[btn.tag-100][@"id"];
+       
+        them.hidesBottomBarWhenPushed=YES;
+        
+        
+        [self.navigationController pushViewController:them animated:YES];
         
     }
     
@@ -259,7 +287,7 @@
     if (btn.tag == 1) {
         
         ClassifyViewController *class=[[ClassifyViewController alloc]init];
-        
+        class.classfyIpDress=KactivityClassfyPlay;
         
         [self.navigationController pushViewController:class animated:YES];
         
@@ -271,6 +299,7 @@
         
         
         ClassifyViewController *class=[[ClassifyViewController alloc]init];
+        class.classfyIpDress=kSpotsVenue;
         
         
         [self.navigationController pushViewController:class animated:YES];
@@ -280,14 +309,14 @@
         
         ClassifyViewController *class=[[ClassifyViewController alloc]init];
         
-        
+        class.classfyIpDress=kStudyIntellect;
         [self.navigationController pushViewController:class animated:YES];
     }
     if (btn.tag == 4) {
         
         
         ClassifyViewController *class=[[ClassifyViewController alloc]init];
-        
+        class.classfyIpDress=kSonTour;
         
         [self.navigationController pushViewController:class animated:YES];
     }
@@ -295,6 +324,8 @@
         
         GoodActivityViewController *good=[[GoodActivityViewController alloc]init];
         
+       
+        good.hidesBottomBarWhenPushed=YES;
         [self.navigationController pushViewController:good animated:YES];
         
         
@@ -304,6 +335,8 @@
         
         
         HotViewController *hot=[[HotViewController alloc]init];
+        
+        
         
         [self.navigationController pushViewController:hot animated:YES];
         
@@ -648,19 +681,33 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
+     MainModel *mainModel = self.listAllArr[indexPath.section][indexPath.row];
     if (indexPath.section == 0) {
         //推荐活动
-        ActivityDetailViewController *activity=[[ActivityDetailViewController alloc]init];
         
+        UIStoryboard *mainSB=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        
+        ActivityDetailViewController *activity=[mainSB instantiateViewControllerWithIdentifier:@"ActivityDetail"];
+        
+        
+        //活动id
+       
+        activity.activityID = mainModel.activityID;
         
         [self.navigationController pushViewController:activity animated:YES];
+        
+        
         
         
     }else{
         
         
         ThemeViewController *them=[[ThemeViewController alloc]init];
+        
+        them.themId=mainModel.activityID;
+       
+        them.hidesBottomBarWhenPushed=YES;
+
         
         [self.navigationController pushViewController:them animated:YES];
         

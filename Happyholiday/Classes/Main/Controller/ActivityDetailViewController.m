@@ -7,9 +7,22 @@
 //
 
 #import "ActivityDetailViewController.h"
-#import <AFHTTPSessionManager.h>
+//#import <AFHTTPSessionManager.h>
+#import "Activity.h"
 #import <MBProgressHUD.h>
+//#import <SDWebImage/UIImageView+WebCache.h>
+
 @interface ActivityDetailViewController ()
+
+@property (strong, nonatomic) IBOutlet Activity *ActivityDetail;
+
+
+@property(nonatomic, strong) NSString *phoneNumber;
+
+@property(nonatomic, strong) NSDictionary *DetailDic;
+
+@property(nonatomic, strong) NSArray *contentArr;
+@property(nonatomic, strong) NSDictionary *shoppingDic;
 
 @end
 
@@ -20,10 +33,80 @@
     // Do any additional setup after loading the view.
     
     
-    self.navigationController.title=@"活动详情";
+    self.title=@"活动详情";
+//    //隐藏tablerbar
+//    self.tabBarController.tabBar.hidden=YES;
     
+   
+    //导航栏左边按钮
     [self showBarButton];
     
+    
+    //去地图界面
+    [self.ActivityDetail.activityMap addTarget:self action:@selector(mapButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    //打电话
+    
+    [self.ActivityDetail.activityPhone addTarget:self action:@selector(makeCallButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self configDataView];
+    [self getModel];
+    
+    
+}
+
+
+
+//地图页
+
+- (void)mapButtonAction:(UIButton *)btn{
+    
+    
+    
+}
+
+
+//打电话
+
+- (void)makeCallButtonAction:(UIButton *)btn{
+    //程序外打电话。打完电话之后不返回当前应用
+//    
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",self.phoneNumber]]];
+    
+    
+     //程序内打电话。打完电话之后还返回当前应用
+    
+    UIWebView *call=[[UIWebView alloc]init];
+    
+    NSURLRequest *request=[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",self.phoneNumber]]];
+    
+    
+    [call loadRequest:request];
+    
+    [self.view addSubview:call];
+    
+    
+}
+
+
+
+
+//懒加载
+
+- (NSArray *)contentArr{
+    
+    if (_contentArr == nil) {
+        self.contentArr =[[NSArray alloc]init];
+        
+    }
+    return _contentArr;
+}
+
+
+-(void)configDataView{
+    
+        
     
     
 }
@@ -58,7 +141,39 @@
     [sessionManager GET:[NSString stringWithFormat:@"%@&id=%@",kActivitychangeDetail,self.activityID] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-       ZPFLog(@"%@",responseObject);
+//       ZPFLog(@"%@",responseObject);
+        
+        NSDictionary *resuleDic=responseObject;
+        
+        NSString *status=resuleDic[@"status"];
+        NSInteger code=[resuleDic[@"code"] integerValue];
+        
+        if ([status isEqualToString:@"success"] &&code == 0) {
+            NSDictionary *dic=resuleDic[@"success"];
+          
+            self.phoneNumber=dic[@"tel"];
+            
+            self.ActivityDetail.dataDic=dic;
+            
+//            self.DetailDic=@{@"address":dic[@"address"],@"image":dic[@"image"],@"lat":dic[@"lat"],@"lng":dic[@"lng"],@"new_end_date":dic[@"new_end_date"],@"new_start_date":dic[@"new_start_date"],@"old_price":dic[@"old_price"],@"price":dic[@"price"],@"pricedesc":dic[@"pricedesc"],@"reminder":dic[@"reminder"],@"shareUrl":dic[@"shareUrl"],@"tel":dic[@"tel"],@"title":dic[@"title"],@"type":dic[@"type"]};
+//            
+//            
+//            ZPFLog(@"%@",self.DetailDic);
+            
+            
+            
+        }else{
+            
+            
+            
+            
+        }
+        
+        
+        
+        
+        
+        [self configDataView];
         
         
         

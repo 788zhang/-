@@ -10,4 +10,12 @@
 
 @interface Activity : UIView
 
+
+@property (weak, nonatomic) IBOutlet UIButton *activityMap;
+
+@property (weak, nonatomic) IBOutlet UIButton *activityPhone;
+
+@property(nonatomic, strong) NSDictionary *dataDic;
+
+
 @end

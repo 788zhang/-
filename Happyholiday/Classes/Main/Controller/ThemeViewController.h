@@ -10,4 +10,5 @@
 
 @interface ThemeViewController : UIViewController
 
+@property(nonatomic, copy) NSString *themId;
 @end
