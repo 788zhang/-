@@ -38,14 +38,15 @@
     [self showBarButton];
     
     self.title=@"竞选活动";
-    
+    self.allGroupArray=[[NSMutableArray alloc]init];
+
     
     
     
     
     [self.tableView registerNib:[UINib nibWithNibName:@"GoodActiivityTableViewCell"  bundle:nil]  forCellReuseIdentifier:@"goodCell"];
     
-//    self.tableView.tableFooterView=[[UIView alloc]init];
+
     
     [self.view addSubview:self.tableView];
     
@@ -69,10 +70,11 @@
     AFHTTPSessionManager *manager=[[AFHTTPSessionManager alloc]init];
     
     manager.responseSerializer.acceptableContentTypes=[NSSet setWithObject:@"text/html"];
-    [manager GET:[NSString stringWithFormat:@"%@&page=%ld",KactivityGood,(long)_pageCount] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+
+    [manager GET:[NSString stringWithFormat:@"%@&page=%ld",KactivityGood,_pageCount] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
        ZPFLog(@"%lld",downloadProgress.totalUnitCount);
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//        ZPFLog(@"%@",responseObject);
+        ZPFLog(@"%@",responseObject);
         NSDictionary *dic=responseObject;
         NSString *status=dic[@"status"];
         NSInteger code=[dic[@"code"] integerValue];
@@ -80,10 +82,20 @@
         if ([status isEqualToString:@"success"] && code ==0) {
             
             NSDictionary *successDic=dic[@"success"];
-            ZPFLog(@"%@",successDic);
+//            ZPFLog(@"%@",successDic);
             
             self.acData =successDic[@"acData"];
-            self.allGroupArray=[[NSMutableArray alloc]init];
+            
+            if (self.refresh) {
+                //下拉刷新时需要移除数组中的元素
+                if ( self.allGroupArray.count>0) {
+                    [self.allGroupArray removeAllObjects];
+                }
+                
+            }
+
+            
+            
             for (NSDictionary *dic in self.acData) {
                 GoodActivityModel *model=[[GoodActivityModel alloc]initWith:dic];
                 
@@ -159,7 +171,7 @@
 //上拉
 - (void)pullingTableViewDidStartLoading:(PullingRefreshTableView *)tableView{
     _pageCount+=1;
-     self.refresh=YES;
+     self.refresh=NO;
     
     [self performSelector:@selector(getNetModel) withObject:nil afterDelay:1.f];
 }
@@ -221,8 +233,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     GoodActiivityTableViewCell *goodcell=[self.tableView dequeueReusableCellWithIdentifier:@"goodCell" forIndexPath:indexPath];
-    
-    goodcell.model=self.allGroupArray[indexPath.row];
+    if (indexPath.row <= self.allGroupArray.count) {
+        goodcell.model= self.allGroupArray[indexPath.row];
+
+    }
     
     
     return goodcell;

@@ -8,6 +8,30 @@
 
 #ifndef HWDefine_h
 #define HWDefine_h
+#import <Foundation/Foundation.h>
+
+
+
+//typedef NS_ENUM(NSInteger,ClassifyListType){
+//    ClassifyListTypeShowRepertoire = 1,   //演出剧目
+//    ClassifyListTypeTouristPlace ,        //旅游景点
+//    ClassifyListTypeStudyPUZ,             //益智
+//    ClassifyListTypeFamilyTrave           //亲子旅游
+//};
+
+
+typedef NS_ENUM(NSInteger, ClassfyListType) {
+    
+    ClassfyListTypeShowRepertoire=1,//演出剧目
+    ClassfyListTypeTouristPlace,  //景点场馆
+    ClassfyListTypeStudyPUZ,  //学习益智
+    ClassfyListTypeFamilyTravel //亲子旅行
+        
+ 
+};
+
+
+
 
 //首页数据接口
 #define kMainDataInterface    @"http://e.kumi.cn/app/v1.3/index.php?_s_=02a411494fa910f5177d82a6b0a63788&_t_=1451307342&channelid=appstore&cityid=1&lat=34.62172291944134&limit=30&lng=112.4149512442411&page=1"
@@ -41,6 +65,10 @@
 
 
 
+//分类列表
+
+#define KClassfy @"http://e.kumi.cn/app/v1.3/catelist.php?_s_=dad924a9b9cd534b53fc2c521e9f8e84&_t_=1452495193&channelid=appstore&cityid=1&lat=34.61356398594803&limit=30&lng=112.4140434532402"
+
 
 
 
@@ -57,7 +85,7 @@
 
 //热门专题
 
-#define KactivityHot @"http://e.kumi.cn/app/positionlist.php?_s_=e2b71c66789428d5385b06c178a88db2&_t_=1452237051&channelid=appstore&cityid=1&lat=34.61351314785497&limit=30&lng=112.4140755658942&page=1"
+#define KactivityHot @"http://e.kumi.cn/app/positionlist.php?_s_=e2b71c66789428d5385b06c178a88db2&_t_=1452237051&channelid=appstore&cityid=1&lat=34.61351314785497&limit=30&lng=112.4140755658942"
 
 
 

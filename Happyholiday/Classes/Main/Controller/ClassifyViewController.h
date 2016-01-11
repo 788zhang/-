@@ -10,6 +10,7 @@
 
 @interface ClassifyViewController : UIViewController
 
-@property(nonatomic, strong) NSString *classfyIpDress;
+
+@property(nonatomic, assign) ClassfyListType classfylistType;
 
 @end

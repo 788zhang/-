@@ -287,7 +287,8 @@
     if (btn.tag == 1) {
         
         ClassifyViewController *class=[[ClassifyViewController alloc]init];
-        class.classfyIpDress=KactivityClassfyPlay;
+        
+        class.classfylistType=btn.tag;
         
         [self.navigationController pushViewController:class animated:YES];
         
@@ -299,8 +300,7 @@
         
         
         ClassifyViewController *class=[[ClassifyViewController alloc]init];
-        class.classfyIpDress=kSpotsVenue;
-        
+        class.classfylistType=btn.tag;
         
         [self.navigationController pushViewController:class animated:YES];
     }
@@ -308,15 +308,14 @@
         
         
         ClassifyViewController *class=[[ClassifyViewController alloc]init];
-        
-        class.classfyIpDress=kStudyIntellect;
+        class.classfylistType=btn.tag;
         [self.navigationController pushViewController:class animated:YES];
     }
     if (btn.tag == 4) {
         
         
         ClassifyViewController *class=[[ClassifyViewController alloc]init];
-        class.classfyIpDress=kSonTour;
+        class.classfylistType=btn.tag;
         
         [self.navigationController pushViewController:class animated:YES];
     }

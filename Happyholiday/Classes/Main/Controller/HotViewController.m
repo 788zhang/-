@@ -9,17 +9,32 @@
 #import "HotViewController.h"
 #import "HotTableViewCell.h"
 #import "ThemeViewController.h"
+#import "PullingRefreshTableView.h"
 
-@interface HotViewController ()<UITableViewDelegate,UITableViewDataSource>
-@property(nonatomic, strong) UITableView *tableView;
+@interface HotViewController ()<UITableViewDelegate,UITableViewDataSource,PullingRefreshTableViewDelegate>
+
+
+{
+    NSInteger  _pageCount;
+    
+}
+@property(nonatomic, assign) BOOL refren;
+@property(nonatomic, strong) PullingRefreshTableView *tableView;
 @property(nonatomic, strong) NSMutableArray *imgArray;
 @property(nonatomic, strong) NSMutableArray *iDArray;
+//@property(nonatomic, strong) PullingRefreshTableView *tableView;
 
 
 
 @end
 
 @implementation HotViewController
+
+
+
+
+
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -43,8 +58,8 @@
     AFHTTPSessionManager *manager=[[AFHTTPSessionManager alloc]init];
     
     manager.responseSerializer.acceptableContentTypes=[NSSet setWithObject:@"text/html"];
-    
-    [manager GET:[NSString stringWithFormat:@"%@",KactivityHot] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+    ZPFLog(@"%@",@(_pageCount));
+    [manager GET:[NSString stringWithFormat:@"%@&page=%@",KactivityHot,@(_pageCount)] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
         ZPFLog(@"%lld",downloadProgress.totalUnitCount);
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -60,6 +75,14 @@
             NSDictionary *successDic=rootDic[@"success"];
             
             NSArray *arr=successDic[@"rcData"];
+            if (self.refren==YES) {
+                if (self.imgArray.count >0) {
+                    [self.imgArray removeAllObjects];
+                    [self.iDArray removeAllObjects];
+                }
+            }
+           
+            
             
             for (NSDictionary *dic in arr) {
                 
@@ -67,6 +90,16 @@
                 [self.iDArray addObject:dic[@"id"]];
                 
             }
+            
+            //完成加载
+            
+            [self.tableView tableViewDidFinishedLoading];
+            
+            self.tableView.reachedTheEnd=NO;
+            
+           
+
+            
             
             [self.view addSubview:self.tableView];
             [self.tableView reloadData];
@@ -116,22 +149,72 @@
     return _imgArray;
 }
 
-
-
-- (UITableView *)tableView{
-    
+- (PullingRefreshTableView *)tableView{
     
     if (_tableView == nil) {
-        _tableView =[[UITableView alloc]initWithFrame:self.view.frame];
-        
+        _tableView=[[PullingRefreshTableView alloc]initWithFrame:self.view.frame pullingDelegate:self];
         _tableView.delegate=self;
         _tableView.dataSource=self;
         _tableView.rowHeight=168;
-        
     }
-    return  _tableView;
+    
+    return _tableView;
 }
 
+#pragma mark ----上拉加载下拉刷新代理方法
+
+//上拉
+- (void)pullingTableViewDidStartLoading:(PullingRefreshTableView *)tableView{
+    _pageCount+=1;
+    self.refren=NO;
+    
+    [self performSelector:@selector(configData) withObject:nil afterDelay:1.f];
+}
+
+
+
+//table开始下拉开始调用
+- (void)pullingTableViewDidStartRefreshing:(PullingRefreshTableView *)tableView{
+    _pageCount=1;
+    self.refren=YES;
+    
+    [self performSelector:@selector(configData) withObject:nil afterDelay:1.0];
+    
+    
+    
+    
+}
+
+
+//刷新完成时间
+- (NSDate *)pullingTableViewRefreshingFinishedDate{
+    NSLog(@"%s - [%d]",__FUNCTION__,__LINE__);
+    
+    return   [HWTools getSystemNowdate];
+    
+    
+}
+
+
+
+#pragma mark - ScrollView Method
+//手指开始拖动方法
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self.tableView tableViewDidScroll:scrollView];
+}
+
+//手指结束拖动方法
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [self.tableView tableViewDidEndDragging:scrollView];
+}
+
+
+
+
+    
+    
 
 
 #pragma mark --- UITableViewDelegate,UITableViewDataSource

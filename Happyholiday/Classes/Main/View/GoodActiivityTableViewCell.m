@@ -48,7 +48,7 @@
 
 - (void)setModel:(GoodActivityModel *)model{
     
-    ZPFLog(@"%@",model.title);
+    
     self.activityTitleLable.text=model.title;
     self.activityPriceLable.text=model.price;
     [self.headImage sd_setImageWithURL:[NSURL URLWithString:model.image] placeholderImage:nil];

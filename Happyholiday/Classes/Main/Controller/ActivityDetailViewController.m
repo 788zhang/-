@@ -154,12 +154,7 @@
             self.phoneNumber=dic[@"tel"];
             
             self.ActivityDetail.dataDic=dic;
-            
-//            self.DetailDic=@{@"address":dic[@"address"],@"image":dic[@"image"],@"lat":dic[@"lat"],@"lng":dic[@"lng"],@"new_end_date":dic[@"new_end_date"],@"new_start_date":dic[@"new_start_date"],@"old_price":dic[@"old_price"],@"price":dic[@"price"],@"pricedesc":dic[@"pricedesc"],@"reminder":dic[@"reminder"],@"shareUrl":dic[@"shareUrl"],@"tel":dic[@"tel"],@"title":dic[@"title"],@"type":dic[@"type"]};
-//            
-//            
-//            ZPFLog(@"%@",self.DetailDic);
-            
+
             
             
         }else{
