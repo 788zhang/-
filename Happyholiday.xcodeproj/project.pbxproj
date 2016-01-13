@@ -10,6 +10,14 @@
 		0CD57079802F52E026C83731 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC4CE1E2171474A1B4ADE98 /* libPods.a */; };
 		7A036F621C3D1AD900B1D9B6 /* ActivityDetail.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A036F611C3D1AD900B1D9B6 /* ActivityDetail.plist */; };
 		7A036F701C3D22DB00B1D9B6 /* UIViewController+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A036F6F1C3D22DB00B1D9B6 /* UIViewController+Common.m */; };
+		7A04E9621C449EFB001224CF /* ProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7A04E95F1C449EFB001224CF /* ProgressHUD.bundle */; };
+		7A04E9631C449EFB001224CF /* ProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A04E9611C449EFB001224CF /* ProgressHUD.m */; };
+		7A04E9671C44FA77001224CF /* UIDiscoverTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A04E9651C44FA77001224CF /* UIDiscoverTableViewCell.m */; };
+		7A04E9681C44FA77001224CF /* UIDiscoverTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A04E9661C44FA77001224CF /* UIDiscoverTableViewCell.xib */; };
+		7A04E9851C450F1A001224CF /* Discover.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A04E9841C450F1A001224CF /* Discover.plist */; };
+		7A04E9881C4511F4001224CF /* DisCover.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A04E9871C4511F4001224CF /* DisCover.m */; };
+		7A07D66E1C4616D100513910 /* SetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A07D66D1C4616D100513910 /* SetViewController.m */; };
+		7A07D6701C462BF800513910 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A07D66F1C462BF800513910 /* MessageUI.framework */; };
 		7A0806161C3A1C510085435F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0806151C3A1C510085435F /* main.m */; };
 		7A0806191C3A1C510085435F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0806181C3A1C510085435F /* AppDelegate.m */; };
 		7A08061B1C3A1C510085435F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A08061A1C3A1C510085435F /* Assets.xcassets */; };
@@ -67,6 +75,18 @@
 		7A036F6E1C3D22DB00B1D9B6 /* UIViewController+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Common.h"; sourceTree = "<group>"; };
 		7A036F6F1C3D22DB00B1D9B6 /* UIViewController+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Common.m"; sourceTree = "<group>"; };
 		7A036F711C3D242F00B1D9B6 /* HWDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HWDefine.h; sourceTree = "<group>"; };
+		7A04E95F1C449EFB001224CF /* ProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ProgressHUD.bundle; sourceTree = "<group>"; };
+		7A04E9601C449EFB001224CF /* ProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressHUD.h; sourceTree = "<group>"; };
+		7A04E9611C449EFB001224CF /* ProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressHUD.m; sourceTree = "<group>"; };
+		7A04E9641C44FA77001224CF /* UIDiscoverTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIDiscoverTableViewCell.h; sourceTree = "<group>"; };
+		7A04E9651C44FA77001224CF /* UIDiscoverTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIDiscoverTableViewCell.m; sourceTree = "<group>"; };
+		7A04E9661C44FA77001224CF /* UIDiscoverTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIDiscoverTableViewCell.xib; sourceTree = "<group>"; };
+		7A04E9841C450F1A001224CF /* Discover.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Discover.plist; sourceTree = "<group>"; };
+		7A04E9861C4511F4001224CF /* DisCover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisCover.h; sourceTree = "<group>"; };
+		7A04E9871C4511F4001224CF /* DisCover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisCover.m; sourceTree = "<group>"; };
+		7A07D66C1C4616D000513910 /* SetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetViewController.h; sourceTree = "<group>"; };
+		7A07D66D1C4616D100513910 /* SetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetViewController.m; sourceTree = "<group>"; };
+		7A07D66F1C462BF800513910 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		7A0806111C3A1C510085435F /* Happyholiday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Happyholiday.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A0806151C3A1C510085435F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		7A0806171C3A1C510085435F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -153,6 +173,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A07D6701C462BF800513910 /* MessageUI.framework in Frameworks */,
 				0CD57079802F52E026C83731 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -163,6 +184,7 @@
 		32CA4080E0A6AE331D8C12EB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7A07D66F1C462BF800513910 /* MessageUI.framework */,
 				5BC4CE1E2171474A1B4ADE98 /* libPods.a */,
 			);
 			name = Frameworks;
@@ -175,6 +197,17 @@
 				C12C1ED4CE146846B6EB092D /* Pods.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		7A04E95E1C449EFB001224CF /* ProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				7A04E95F1C449EFB001224CF /* ProgressHUD.bundle */,
+				7A04E9601C449EFB001224CF /* ProgressHUD.h */,
+				7A04E9611C449EFB001224CF /* ProgressHUD.m */,
+			);
+			name = ProgressHUD;
+			path = ../ProgressHUD;
 			sourceTree = "<group>";
 		};
 		7A0806081C3A1C510085435F = {
@@ -198,7 +231,6 @@
 		7A0806131C3A1C510085435F /* Happyholiday */ = {
 			isa = PBXGroup;
 			children = (
-				7AFA8DFF1C438FBB0097EAE4 /* VOSegmentedControlDemo */,
 				7A0806491C3A4FF20085435F /* Resource */,
 				7A0806321C3A4DE10085435F /* Classes */,
 				7A0806481C3A4E7C0085435F /* Library */,
@@ -252,6 +284,9 @@
 		7A0806371C3A4DE10085435F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				7A04E9841C450F1A001224CF /* Discover.plist */,
+				7A04E9861C4511F4001224CF /* DisCover.h */,
+				7A04E9871C4511F4001224CF /* DisCover.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -260,6 +295,9 @@
 			isa = PBXGroup;
 			children = (
 				7A08064C1C3A50B20085435F /* DiscoverStoryboard.storyboard */,
+				7A04E9641C44FA77001224CF /* UIDiscoverTableViewCell.h */,
+				7A04E9651C44FA77001224CF /* UIDiscoverTableViewCell.m */,
+				7A04E9661C44FA77001224CF /* UIDiscoverTableViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -357,6 +395,8 @@
 			children = (
 				7A0806411C3A4DE10085435F /* MineViewController.h */,
 				7A0806421C3A4DE10085435F /* MineViewController.m */,
+				7A07D66C1C4616D000513910 /* SetViewController.h */,
+				7A07D66D1C4616D100513910 /* SetViewController.m */,
 			);
 			path = Contoller;
 			sourceTree = "<group>";
@@ -391,7 +431,9 @@
 				7A54A6911C3CAA65008D7F94 /* MySelf.pch */,
 				7AD0B7F51C3B97C300A95969 /* Model.plist */,
 				7A036F611C3D1AD900B1D9B6 /* ActivityDetail.plist */,
+				7A04E95E1C449EFB001224CF /* ProgressHUD */,
 				7A036F6E1C3D22DB00B1D9B6 /* UIViewController+Common.h */,
+				7AFA8E0B1C438FBB0097EAE4 /* VOSegmentedControl */,
 				7A036F6F1C3D22DB00B1D9B6 /* UIViewController+Common.m */,
 				7A036F711C3D242F00B1D9B6 /* HWDefine.h */,
 				7A6E860A1C3E4C2C0011D115 /* HWTools.h */,
@@ -413,14 +455,6 @@
 			path = PullingRefreshTableView;
 			sourceTree = "<group>";
 		};
-		7AFA8DFF1C438FBB0097EAE4 /* VOSegmentedControlDemo */ = {
-			isa = PBXGroup;
-			children = (
-				7AFA8E0B1C438FBB0097EAE4 /* VOSegmentedControl */,
-			);
-			path = VOSegmentedControlDemo;
-			sourceTree = "<group>";
-		};
 		7AFA8E0B1C438FBB0097EAE4 /* VOSegmentedControl */ = {
 			isa = PBXGroup;
 			children = (
@@ -433,7 +467,8 @@
 				7AFA8E121C438FBB0097EAE4 /* VOSegmentedControl.h */,
 				7AFA8E131C438FBB0097EAE4 /* VOSegmentedControl.m */,
 			);
-			path = VOSegmentedControl;
+			name = VOSegmentedControl;
+			path = ../VOSegmentedControlDemo/VOSegmentedControl;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -497,11 +532,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A04E9681C44FA77001224CF /* UIDiscoverTableViewCell.xib in Resources */,
+				7A04E9621C449EFB001224CF /* ProgressHUD.bundle in Resources */,
 				7AFA8E231C43A8150097EAE4 /* typeid6.plist in Resources */,
 				7A0CF5891C4268C900B93AC1 /* ClassfyTableViewCell.xib in Resources */,
 				7A0C87391C3F9CBD0036426C /* goodActivity.plist in Resources */,
 				7A0C87341C3F5D6E0036426C /* Them.plist in Resources */,
 				7AFA8E251C43A8150097EAE4 /* typeid23.plist in Resources */,
+				7A04E9851C450F1A001224CF /* Discover.plist in Resources */,
 				7AD0B7F61C3B97C300A95969 /* Model.plist in Resources */,
 				7A09610C1C3A766D00B0DDB4 /* MainTableViewCell.xib in Resources */,
 				7A08064D1C3A50B20085435F /* DiscoverStoryboard.storyboard in Resources */,
@@ -580,19 +618,23 @@
 				7A0CF5881C4268C900B93AC1 /* ClassfyTableViewCell.m in Sources */,
 				7A0C87451C3FA3B40036426C /* GoodActiivityTableViewCell.m in Sources */,
 				7A0C87371C3F5EC60036426C /* ActivityThem.m in Sources */,
+				7A04E9881C4511F4001224CF /* DisCover.m in Sources */,
 				7A54A6A11C3CBFF5008D7F94 /* ClassifyViewController.m in Sources */,
 				7A09610B1C3A766D00B0DDB4 /* MainTableViewCell.m in Sources */,
 				7A6E86091C3E10DD0011D115 /* Activity.m in Sources */,
+				7A07D66E1C4616D100513910 /* SetViewController.m in Sources */,
 				7A54A6A41C3CC06F008D7F94 /* GoodActivityViewController.m in Sources */,
 				7A0CF58C1C426C8000B93AC1 /* Classfy.m in Sources */,
 				7A0806191C3A1C510085435F /* AppDelegate.m in Sources */,
 				7A0806451C3A4DE10085435F /* DiscoverViewController.m in Sources */,
 				7A0C874B1C3FBE450036426C /* GoodActivityModel.m in Sources */,
+				7A04E9631C449EFB001224CF /* ProgressHUD.m in Sources */,
 				7A0806471C3A4DE10085435F /* MineViewController.m in Sources */,
 				7A54A69B1C3CBE75008D7F94 /* ActivityDetailViewController.m in Sources */,
 				7A54A6981C3CBDB8008D7F94 /* SearchViewController.m in Sources */,
 				7AFA8E1B1C438FBB0097EAE4 /* VOContentLayer.m in Sources */,
 				7AFA8E1E1C438FBB0097EAE4 /* VOSegmentedControl.m in Sources */,
+				7A04E9671C44FA77001224CF /* UIDiscoverTableViewCell.m in Sources */,
 				7AFA8E1C1C438FBB0097EAE4 /* VOIndicatorAnimation.m in Sources */,
 				7A54A6A71C3CC083008D7F94 /* HotViewController.m in Sources */,
 				7A54A69E1C3CBF47008D7F94 /* ThemeViewController.m in Sources */,
@@ -714,7 +756,7 @@
 				INFOPLIST_FILE = Happyholiday/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.zhang.Happyholiday;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zhang.Happyholiday1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -732,7 +774,7 @@
 				INFOPLIST_FILE = Happyholiday/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.zhang.Happyholiday;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zhang.Happyholiday1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

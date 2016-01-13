@@ -51,6 +51,9 @@
     
     self.activityTitleLable.text=model.title;
     self.activityPriceLable.text=model.price;
+    self.headImage.layer.cornerRadius=35;
+    self.headImage.clipsToBounds=YES;
+    
     [self.headImage sd_setImageWithURL:[NSURL URLWithString:model.image] placeholderImage:nil];
     
     self.activityDistanceLable.text=@"694.52km";

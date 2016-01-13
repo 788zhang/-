@@ -138,8 +138,14 @@
                 }
             }
         }
+        
+        _lastLabelBottom=label.bottom > _previousImageBottom ? label.bottom+70:_previousImageBottom+70;
+        
+        
+        
     }
   
+    
 }
 
 

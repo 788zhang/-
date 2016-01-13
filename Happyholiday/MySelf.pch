@@ -29,7 +29,16 @@
 #	define ZPFLog(...)
 #endif
 
-//
+
+
+//颜色
+#define RGB(x,y,z) [UIColor colorWithRed:x/255.0 green:y/255.0 blue:z/255.0 alpha:1.0]
+
+
+
+
+
+
 
 
 // Include any system framework and library headers here that should be included in all compilation units.

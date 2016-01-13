@@ -9,7 +9,7 @@
 #import "ActivityDetailViewController.h"
 //#import <AFHTTPSessionManager.h>
 #import "Activity.h"
-#import <MBProgressHUD.h>
+//#import <MBProgressHUD.h>
 //#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface ActivityDetailViewController ()
@@ -123,7 +123,7 @@
     sessionManager.responseSerializer.acceptableContentTypes=[NSSet setWithObject:@"text/html"];
     
     
-    [MBProgressHUD showHUDAddedTo:self.view  animated:YES];
+//    [MBProgressHUD showHUDAddedTo:self.view  animated:YES];
     
     
 //    
@@ -172,7 +172,7 @@
         
         
         
-        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+//        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         

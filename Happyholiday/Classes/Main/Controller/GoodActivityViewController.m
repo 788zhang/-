@@ -11,6 +11,7 @@
 #import "PullingRefreshTableView.h"
 #import "GoodActivityModel.h"
 #import "GoodActiivityTableViewCell.h"
+#import "ActivityDetailViewController.h"
 @interface GoodActivityViewController ()<UITableViewDataSource,UITableViewDelegate,PullingRefreshTableViewDelegate>
 
 
@@ -247,6 +248,27 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    
+    
+    
+   
+           //推荐活动
+        
+        UIStoryboard *mainSB=[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        
+        ActivityDetailViewController *activity=[mainSB instantiateViewControllerWithIdentifier:@"ActivityDetail"];
+        
+        
+        //活动id
+    GoodActivityModel *model=self.allGroupArray[indexPath.row];
+    
+        activity.activityID = model.activityid;
+        
+        [self.navigationController pushViewController:activity animated:YES];
+        
+        
+    
     
     
     

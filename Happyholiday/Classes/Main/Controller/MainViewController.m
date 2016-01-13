@@ -51,8 +51,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    
+    self.navigationItem.title=@"骑车去旅行";
+     self.navigationController.navigationBar.barTintColor=RGB(96, 185, 185);
       //左
     
     UIBarButtonItem *leftbtn=[[UIBarButtonItem alloc]initWithTitle:@"洛阳" style:UIBarButtonItemStylePlain target:self action:@selector(selectCity)];
@@ -82,7 +82,7 @@
     [self requestModel];
     
     
-    //解析数据
+    //tableView的头View
     [self configTableViewheadView];
     
     

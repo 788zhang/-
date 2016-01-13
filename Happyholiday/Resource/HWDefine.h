@@ -31,7 +31,7 @@ typedef NS_ENUM(NSInteger, ClassfyListType) {
 };
 
 
-
+#pragma mark ----主页接口
 
 //首页数据接口
 #define kMainDataInterface    @"http://e.kumi.cn/app/v1.3/index.php?_s_=02a411494fa910f5177d82a6b0a63788&_t_=1451307342&channelid=appstore&cityid=1&lat=34.62172291944134&limit=30&lng=112.4149512442411&page=1"
@@ -86,6 +86,16 @@ typedef NS_ENUM(NSInteger, ClassfyListType) {
 //热门专题
 
 #define KactivityHot @"http://e.kumi.cn/app/positionlist.php?_s_=e2b71c66789428d5385b06c178a88db2&_t_=1452237051&channelid=appstore&cityid=1&lat=34.61351314785497&limit=30&lng=112.4140755658942"
+
+
+
+
+#pragma mark ----发现
+
+#define Kdiscover @"http://e.kumi.cn/app/found.php?_s_=a82c7d49216aedb18c04a20fd9b0d5b2&_t_=1451310230&channelid=appstore&cityid=1&lat=34.62172291944134&lng=112.4149512442411"
+
+
+
 
 
 

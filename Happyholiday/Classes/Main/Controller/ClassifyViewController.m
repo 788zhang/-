@@ -16,6 +16,9 @@
 #import "ActivityDetailViewController.h"
 #import "VOSegmentedControl.h"
 
+#import "ProgressHUD.h"
+
+
 @interface ClassifyViewController ()<UITableViewDataSource,UITableViewDelegate,PullingRefreshTableViewDelegate>
 
 {
@@ -56,45 +59,80 @@
     [self showBarButton];
     
     self.view.backgroundColor=[UIColor redColor];
-    [self configData];
     
     [self.view addSubview:self.tableView];
-
+    [self.view addSubview:self.segctrl1];
     [self.tableView registerNib:[UINib nibWithNibName:@"ClassfyTableViewCell" bundle:nil] forCellReuseIdentifier:@"classfyCell"];
-    //第一次进入分类列表中，请求全部的接口
-    [self getForRequest];
-//    //根据上一页选择的按钮，确定显示第几页
-//    [self showPreviousSelectButton];
-    
-    
-    
-    
-   [self.view addSubview:self.segctrl1];
-
+    _pageCount=1;
+    [self chooseRequest];
     
     
 
     
     }
     
+
+
+-(void)chooseRequest{
+    
+    switch (self.classfylistType) {
+        case  ClassfyListTypeShowRepertoire:
+            [self getShowRequest];
+        break;
+        case ClassfyListTypeTouristPlace:
+            [self getToursData];
+            
+            break;
+        case ClassfyListTypeStudyPUZ:
+            [self getStudyData];
+            break;
+        case ClassfyListTypeFamilyTravel:
+            [self getFamilyData];
+            break;
+        default:
+            break;
+    }
     
     
+    
+}
+
+
+
+//- (void)viewWillAppear:(BOOL)animated{
+//    
+//    [super viewWillDisappear:animated];
+//    
+//    [ProgressHUD dismiss];
+//    
+//    
+//    
+//}
+
 #pragma mark ----Custom Method  四个接口
 
 
--(void)getForRequest{
+-(void)getShowRequest{
     
     
     AFHTTPSessionManager *sessionManager=[AFHTTPSessionManager manager];
     
     
     sessionManager.responseSerializer.acceptableContentTypes=[NSSet setWithObject:@"text/html"];
+    
+    [ProgressHUD show:@"别着急，让哥加载一会,着急，打死你！！！...."];
+    
+    
+    
+    
     //演出剧目
-    [sessionManager GET:[NSString stringWithFormat:@"%@&page=%@&typeid=%@",KClassfy,@(1),@(6)] parameters:nil
+    [sessionManager GET:[NSString stringWithFormat:@"%@&page=%@&typeid=%@",KClassfy,@(_pageCount),@(6)] parameters:nil
   progress:^(NSProgress * _Nonnull downloadProgress) {
       ZPFLog(@"%lld",downloadProgress.totalUnitCount);
       
   } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+      [ProgressHUD showSuccess:@"主人，我以为你备好数据"];
+      
       ZPFLog(@"%@",responseObject);
       NSDictionary *dic=responseObject;
       NSString *status=dic[@"status"];
@@ -107,6 +145,13 @@
           
           self.acData =successDic[@"acData"];
           
+          if (self.refresh) {
+              if (self.showArr.count>0) {
+                  [self.showArr removeAllObjects];
+              }
+          }
+          
+          
           for (NSDictionary *dic in self.acData) {
               
               Classfy *model=[[Classfy alloc]initWith:dic];
@@ -114,20 +159,47 @@
               
           }
       
-      
-      
+          [self showPreviousSelectButton];
+          [self.tableView reloadData];
       
       }
   } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
       ZPFLog(@"%@",error);
+      
+      [ProgressHUD showError:[NSString stringWithFormat:@"%@",error]];
+      
   }];
     
-    //typeid 23 景点旅行
     
-    [sessionManager GET:[NSString stringWithFormat:@"%@&page=%@&typeid=%@",KClassfy,@(1),@(23)] parameters:nil
+    
+    
+    
+    
+    
+}
+
+
+- (void)getToursData{
+    
+    
+    AFHTTPSessionManager *sessionManager=[AFHTTPSessionManager manager];
+    
+    
+    sessionManager.responseSerializer.acceptableContentTypes=[NSSet setWithObject:@"text/html"];
+
+     [ProgressHUD show:@"别着急，让哥加载一会,着急，打死你！！！...." Interaction:YES];
+    
+    //typeid 21 景点旅行
+    
+    
+    [sessionManager GET:[NSString stringWithFormat:@"%@&page=%@&typeid=%@",KClassfy,@(_pageCount),@(23)] parameters:nil
                progress:^(NSProgress * _Nonnull downloadProgress) {
                    ZPFLog(@"%lld",downloadProgress.totalUnitCount);
                } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   
+                   
+                   [ProgressHUD showSuccess:@"主人，我以为你备好数据"];
+
                    ZPFLog(@"%@",responseObject);
                    NSDictionary *dic=responseObject;
                    NSString *status=dic[@"status"];
@@ -139,87 +211,34 @@
                        //            ZPFLog(@"%@",successDic);
                        
                        self.acData =successDic[@"acData"];
+                       
+                       
+                       if (self.refresh) {
+                           if (self.toursArr.count>0) {
+                               [self.toursArr removeAllObjects];
+                           }
+                       }
+                       
+                       
                        for (NSDictionary *dic in self.acData) {
                            
                            Classfy *model=[[Classfy alloc]initWith:dic];
                            [self.toursArr addObject:model];
                            
                        }
-
-                   
-                   }
-               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                   ZPFLog(@"%@",error);
-               }];
-
-    
-    //typeid 22 学习益智
-    [sessionManager GET:[NSString stringWithFormat:@"%@&page=%@&typeid=%@",KClassfy,@(1),@(22)] parameters:nil
-               progress:^(NSProgress * _Nonnull downloadProgress) {
-                   ZPFLog(@"%lld",downloadProgress.totalUnitCount);
-               } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                   ZPFLog(@"%@",responseObject);
-                   NSDictionary *dic=responseObject;
-                   NSString *status=dic[@"status"];
-                   NSInteger code=[dic[@"code"] integerValue];
-                   
-                   if ([status isEqualToString:@"success"] && code ==0) {
                        
-                       NSDictionary *successDic=dic[@"success"];
-                       //            ZPFLog(@"%@",successDic);
-                       
-                       self.acData =successDic[@"acData"];
-                       for (NSDictionary *dic in self.acData) {
-                           
-                           Classfy *model=[[Classfy alloc]initWith:dic];
-                           [self.studyArr addObject:model];
-                           
-                       }
-
-                   
-                   }
-               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                   ZPFLog(@"%@",error);
-               }];
-
-    //typeid 21 亲子旅行
-    
-    
-    [sessionManager GET:[NSString stringWithFormat:@"%@&page=%@&typeid=%@",KClassfy,@(1),@(21)] parameters:nil
-               progress:^(NSProgress * _Nonnull downloadProgress) {
-                   ZPFLog(@"%lld",downloadProgress.totalUnitCount);
-               } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                   ZPFLog(@"%@",responseObject);
-                   NSDictionary *dic=responseObject;
-                   NSString *status=dic[@"status"];
-                   NSInteger code=[dic[@"code"] integerValue];
-                   
-                   if ([status isEqualToString:@"success"] && code ==0) {
-                       
-                       NSDictionary *successDic=dic[@"success"];
-                       //            ZPFLog(@"%@",successDic);
-                       
-                       self.acData =successDic[@"acData"];
-                   
-                       for (NSDictionary *dic in self.acData) {
-                           
-                           Classfy *model=[[Classfy alloc]initWith:dic];
-                           [self.familyArr addObject:model];
-                           
-                       }
-
                    }else{
                        
                        
                        
                    }
-                   
-                   
                    [self showPreviousSelectButton];
-
+                   [self.tableView reloadData];
+                   
                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                    ZPFLog(@"%@",error);
                }];
+    
 
     
     
@@ -228,8 +247,133 @@
 }
 
 
+- (void)getStudyData{
+    AFHTTPSessionManager *sessionManager=[AFHTTPSessionManager manager];
+    
+    
+    sessionManager.responseSerializer.acceptableContentTypes=[NSSet setWithObject:@"text/html"];
+   [ProgressHUD show:@"别着急，让哥加载一会,着急，打死你！！！...." Interaction:YES];
+    //typeid 22 学习益智
+    [sessionManager GET:[NSString stringWithFormat:@"%@&page=%@&typeid=%@",KClassfy,@(_pageCount),@(22)] parameters:nil
+               progress:^(NSProgress * _Nonnull downloadProgress) {
+                   ZPFLog(@"%lld",downloadProgress.totalUnitCount);
+               } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   
+                   [ProgressHUD showSuccess:@"主人，我以为你备好数据"];
+
+                   ZPFLog(@"%@",responseObject);
+                   NSDictionary *dic=responseObject;
+                   NSString *status=dic[@"status"];
+                   NSInteger code=[dic[@"code"] integerValue];
+                   
+                   if ([status isEqualToString:@"success"] && code ==0) {
+                       
+                       NSDictionary *successDic=dic[@"success"];
+                       //            ZPFLog(@"%@",successDic);
+                       
+                       self.acData =successDic[@"acData"];
+                       
+                       if (self.refresh) {
+                           if (self.studyArr.count>0) {
+                               [self.studyArr removeAllObjects];
+                           }
+                       }
+
+                       
+                       for (NSDictionary *dic in self.acData) {
+                           
+                           Classfy *model=[[Classfy alloc]initWith:dic];
+                           [self.studyArr addObject:model];
+                           
+                       }
+                       [self showPreviousSelectButton];
+                     [self.tableView reloadData];
+                   }
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   ZPFLog(@"%@",error);
+               }];
+
+    
+    
+    
+}
+- (void)getFamilyData{
+    
+    AFHTTPSessionManager *sessionManager=[AFHTTPSessionManager manager];
+    
+    
+    sessionManager.responseSerializer.acceptableContentTypes=[NSSet setWithObject:@"text/html"];
+    
+    [ProgressHUD show:@"别着急，让哥加载一会,着急，打死你！！！...." Interaction:YES];
+    //typeid 21 亲子旅行
+    
+    
+    [sessionManager GET:[NSString stringWithFormat:@"%@&page=%@&typeid=%@",KClassfy,@(_pageCount),@(21)] parameters:nil
+               progress:^(NSProgress * _Nonnull downloadProgress) {
+                   ZPFLog(@"%lld",downloadProgress.totalUnitCount);
+               } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                   [ProgressHUD showSuccess:@"主人，我以为你备好数据"];
+
+                   
+                   ZPFLog(@"%@",responseObject);
+                   NSDictionary *dic=responseObject;
+                   NSString *status=dic[@"status"];
+                   NSInteger code=[dic[@"code"] integerValue];
+                   
+                   if ([status isEqualToString:@"success"] && code ==0) {
+                       
+                       NSDictionary *successDic=dic[@"success"];
+                       //            ZPFLog(@"%@",successDic);
+                       
+                       self.acData =successDic[@"acData"];
+                       
+                       
+                       if (self.refresh) {
+                           if (self.familyArr.count>0) {
+                               [self.familyArr removeAllObjects];
+                           }
+                       }
+
+                       
+                       for (NSDictionary *dic in self.acData) {
+                           
+                           Classfy *model=[[Classfy alloc]initWith:dic];
+                           [self.familyArr addObject:model];
+                           
+                       }
+                       
+                   }else{
+                       
+                       
+                       
+                   }
+                   
+                   [self showPreviousSelectButton];
+                   [self.tableView reloadData];
+               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                   ZPFLog(@"%@",error);
+               }];
+    
+
+    
+    
+    
+    
+}
+
 
 -(void)showPreviousSelectButton{
+    
+    
+    
+    if (self.refresh ) {
+        if (self.showDataArr.count>0) {
+            [self.showDataArr removeAllObjects];
+        }
+    }
+    
+    
+    
     
     if (self.showDataArr.count >0) {
         [self.showDataArr removeAllObjects];
@@ -244,16 +388,19 @@
             break;
         case ClassfyListTypeTouristPlace:
         {
+            
             self.showDataArr=self.toursArr;
         }
             break;
         case ClassfyListTypeStudyPUZ:
         {
+           
             self.showDataArr=self.studyArr;
         }
             break;
         case ClassfyListTypeFamilyTravel:
         {
+            
             self.showDataArr=self.familyArr;
         }
             break;
@@ -261,6 +408,15 @@
         default:
             break;
     }
+    
+    //完成加载
+    
+    [self.tableView tableViewDidFinishedLoading];
+    
+    self.tableView.reachedTheEnd=NO;
+    
+    [self.tableView reloadData];
+    
     
     [self.tableView reloadData];
     
@@ -270,76 +426,8 @@
 
 
 
-#pragma mark ---- 网络请求
+#pragma mark ----上拉，下拉操作
 -(void)configData{
-    
-    AFHTTPSessionManager  *sessionManager=[AFHTTPSessionManager manager];
-    
-    sessionManager.responseSerializer.acceptableContentTypes=[NSSet setWithObject:@"text/html"];
-    
-    
-    [sessionManager GET:[NSString stringWithFormat:@"%@&page=%ld",KClassfy,_pageCount] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
-        NSLog(@"%lld",downloadProgress.totalUnitCount);
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-      //  ZPFLog(@"%@",responseObject);
-        
-        
-        NSDictionary *dic=responseObject;
-        NSString *status=dic[@"status"];
-        NSInteger code=[dic[@"code"] integerValue];
-        
-        if ([status isEqualToString:@"success"] && code ==0) {
-            
-            NSDictionary *successDic=dic[@"success"];
-            //            ZPFLog(@"%@",successDic);
-            
-            self.acData =successDic[@"acData"];
-            self.allGroupArray=[[NSMutableArray alloc]init];
-            
-            if (self.refresh) {
-               //下拉刷新时需要移除数组中的元素
-                if ( self.allGroupArray.count>0) {
-                    [self.allGroupArray removeAllObjects];
-                }
-                
-            }
-            
-            for (NSDictionary *dic in self.acData) {
-              
-                Classfy *model=[[Classfy alloc]initWith:dic];
-                
-                
-                
-                [self.allGroupArray addObject:model];
-                
-            }
-            
-            
-            
-            //完成加载
-            
-            [self.tableView tableViewDidFinishedLoading];
-            
-            self.tableView.reachedTheEnd=NO;
-            
-            [self.tableView reloadData];
-            
-        }else{
-            
-            
-            
-        }
-        
-
-        
-        
-        
-        
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        ZPFLog(@"%@",error);
-    }];
     
     
 }
@@ -390,11 +478,20 @@
 
 
 -(void)segmentCtrlValuechange:(VOSegmentedControl *)segmentCtrl{
-    self.classfylistType=segmentCtrl.selectedSegmentIndex;
-    [self showPreviousSelectButton];
+    
+   
+    
+    self.classfylistType=segmentCtrl.selectedSegmentIndex+1;
+    
+    [self chooseRequest];
+    
     [self.tableView reloadData];
     
-//    NSLog(@"%@" ,@(segmentCtrl.selectedSegmentIndex));
+    
+//    [self showPreviousSelectButton];
+//    [self.tableView reloadData];
+    
+
 }
 
 
@@ -492,7 +589,7 @@
 //上拉
 - (void)pullingTableViewDidStartLoading:(PullingRefreshTableView *)tableView{
     _pageCount+=1;
-    self.refresh=YES;
+    self.refresh=NO;
     
     [self performSelector:@selector(configData) withObject:nil afterDelay:1.f];
 }
@@ -502,7 +599,7 @@
 //table开始下拉开始调用
 - (void)pullingTableViewDidStartRefreshing:(PullingRefreshTableView *)tableView{
     _pageCount=1;
-    self.refresh=NO;
+    self.refresh=YES;
     
     [self performSelector:@selector(configData) withObject:nil afterDelay:1.0];
     
