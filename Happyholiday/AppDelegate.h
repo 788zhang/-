@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WeiboSDK.h"
+#import "WXApi.h"
+@interface AppDelegate : UIResponder <UIApplicationDelegate,WXApiDelegate>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
-
+@property(nonatomic, strong) NSString* wbtoken; 
 @property (strong, nonatomic) UIWindow *window;
 @property(nonatomic, strong) UITabBarController *tabbar;
 

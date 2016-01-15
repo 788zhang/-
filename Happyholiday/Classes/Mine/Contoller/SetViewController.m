@@ -9,11 +9,13 @@
 #import "SetViewController.h"
 #import <MessageUI/MessageUI.h>
 #import "ProgressHUD.h"
-@interface SetViewController ()<UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate>
+#import "WeiboSDK.h"
+#import "AppDelegate.h"
+@interface SetViewController ()<UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate,WBHttpRequestDelegate>
 @property(nonatomic, strong) NSMutableArray *titleArr;
 @property(nonatomic, strong) NSArray *imageArr;
 @property(nonatomic, strong) UITableView *tableView;
-
+@property(nonatomic, strong) UIView *shareView;
 @end
 
 @implementation SetViewController
@@ -230,6 +232,15 @@
         case 2:
         {
             
+            //分享
+            
+            [self CustomshareView];
+            
+            
+            
+            
+            
+            
         }
             break;
         case 3:
@@ -273,10 +284,245 @@
 }
 
 
+#pragma mark ----分享视图
 
+
+-(void)CustomshareView{
+    
+    UIWindow *window=[[UIApplication sharedApplication].delegate window];
+    
+    
+    self.shareView=[[UIView alloc]initWithFrame:CGRectMake(0, KScreenHeight-200, KScreenWidth, 200)];
+    
+    
+    self.shareView.backgroundColor=[UIColor redColor];
+    [window addSubview:self.shareView];
+    
+    
+    
+    [UIView animateWithDuration:1.0 animations:^{
+        
+        
+        //微博授权
+        UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        btn.frame=CGRectMake(50,10, 50,50);
+        
+        [btn setImage:[UIImage imageNamed:@"ic_com_weibo"] forState:UIControlStateNormal];
+        
+        [btn addTarget:self action:@selector(shareWb) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.shareView addSubview:btn];
+        
+        
+        UILabel *label=[[UILabel alloc]initWithFrame:CGRectMake(20, 60, 70, 30)];
+        label.text=@"微博分享";
+        label.textColor=[UIColor blackColor];
+        [self.shareView addSubview:label];
+        
+        
+        
+        
+        //微博取消授权
+        UIButton *btnCancelAuthorize=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        btnCancelAuthorize.frame=CGRectMake(50, 120, 50,50);
+        
+        [btnCancelAuthorize setImage:[UIImage imageNamed:@"ic_com_weibo"] forState:UIControlStateNormal];
+        
+        [btnCancelAuthorize addTarget:self action:@selector(CancelWBAuthorize) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.shareView addSubview:btnCancelAuthorize];
+        
+
+        UILabel *labelCancel=[[UILabel alloc]initWithFrame:CGRectMake(20, 170, 100, 30)];
+        labelCancel.text=@"微博取消授权";
+        labelCancel.font=[UIFont systemFontOfSize:16];
+        labelCancel.textColor=[UIColor blackColor];
+        [self.shareView addSubview:labelCancel];
+        
+        
+        
+        //微信
+        
+        UIButton *btn1=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        btn1.frame=CGRectMake(150, 10, 50, 50);
+        
+        [btn1 setImage:[UIImage imageNamed:@"icon_weixin"] forState:UIControlStateNormal];
+        
+        [btn1 addTarget:self action:@selector(shareWX) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.shareView addSubview:btn1];
+        
+        UILabel *labelWX=[[UILabel alloc]initWithFrame:CGRectMake(135, 60, 70, 30)];
+        labelWX.text=@"微信分享";
+        labelWX.textColor=[UIColor blackColor];
+        [self.shareView addSubview:labelWX];
+
+        
+        
+        
+        //微信朋友圈
+        
+        UIButton *btnCancelWX=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        btnCancelWX.frame=CGRectMake(150, 120, 50, 50);
+        
+        [btnCancelWX setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
+        
+        [btnCancelWX addTarget:self action:@selector(CancelshareWX) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.shareView addSubview:btnCancelWX];
+        
+        UILabel *labelCancelWX=[[UILabel alloc]initWithFrame:CGRectMake(135, 170, 110, 30)];
+        labelCancelWX.text=@"朋友圈";
+        labelCancelWX.textColor=[UIColor blackColor];
+        [self.shareView addSubview:labelCancelWX];
+        
+        
+        
+        //removeView
+        
+      
+        
+        UIButton *btn2=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        btn2.frame=CGRectMake(250, 40, 70, 70);
+        
+        [btn2 setTitle:@"取消" forState:UIControlStateNormal];
+        [btn2 setTintColor:[UIColor blackColor]];
+        [btn2 addTarget:self action:@selector(cleanView) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.shareView addSubview:btn2];
+
+        
+        
+        
+        
+    }];
+    
+    
+    
+    
+}
+
+//版本请求成功
 -(void)checkAppVersion{
     
     [ProgressHUD showSuccess:@"你已经是最新版本"];
+    
+    
+}
+
+
+
+
+#pragma mark ----分享的按钮方法
+
+
+-(void)cleanView{
+    
+    [self.shareView removeFromSuperview];
+    
+    
+}
+
+#pragma mark ----微博分享
+-(void)shareWb{
+    
+    AppDelegate *myDelegate =(AppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    WBAuthorizeRequest *authRequest = [WBAuthorizeRequest request];
+    authRequest.redirectURI = kRedirectURI;
+    authRequest.scope = @"all";
+    
+    WBSendMessageToWeiboRequest *request = [WBSendMessageToWeiboRequest requestWithMessage:[self messageToShare] authInfo:authRequest access_token:myDelegate.wbtoken];
+    request.userInfo = @{@"ShareMessageFrom": @"SendMessageToWeiboViewController",
+                         @"Other_Info_1": [NSNumber numberWithInt:123],
+                         @"Other_Info_2": @[@"obj1", @"obj2"],
+                         @"Other_Info_3": @{@"key1": @"obj1", @"key2": @"obj2"}};
+    //    request.shouldOpenWeiboAppInstallPageIfNotInstalled = NO;
+    [WeiboSDK sendRequest:request];
+    
+
+    
+}
+
+//分享数据
+- (WBMessageObject *)messageToShare
+{
+    WBMessageObject *message = [WBMessageObject message];
+    
+    message.text = @"微博分享";
+    
+    
+    
+    
+    return message;
+}
+
+
+//取消授权
+- (void)CancelWBAuthorize{
+    
+    
+    AppDelegate *myDelegate =(AppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    [WeiboSDK logOutWithToken:myDelegate.wbtoken delegate:self withTag:nil];
+
+    
+}
+
+
+
+#pragma mark ----微信分享
+//
+-(void)shareWX{
+    
+    
+    SendMessageToWXReq* req =[[SendMessageToWXReq alloc] init];
+    req.text = @"人文的东西并不是体现在你看得到的方面，它更多的体现在你看不到的那些方面，它会影响每一个功能，这才是最本质的。但是，对这点可能很多人没有思考过，以为人文的东西就是我们搞一个很小清新的图片什么的。”综合来看，人文的东西其实是贯穿整个产品的脉络，或者说是它的灵魂所在。";
+    req.bText = YES;
+    //微信好友
+    req.scene = WXSceneSession;
+    
+    [WXApi sendReq:req];
+
+    
+    
+    
+    
+}
+-(void)CancelshareWX{
+    
+    
+    WXMediaMessage *message = [WXMediaMessage message];
+    [message setThumbImage:[UIImage imageNamed:@""]];
+    
+    WXImageObject *ext = [WXImageObject object];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"60" ofType:@".jpg"];
+
+    ext.imageData = [NSData dataWithContentsOfFile:filePath];
+    
+    
+    UIImage* image = [UIImage imageWithData:ext.imageData];
+    ext.imageData = UIImagePNGRepresentation(image);
+    
+    
+    message.mediaObject = ext;
+    
+    SendMessageToWXReq* req = [[SendMessageToWXReq alloc] init];
+    req.bText = NO;
+    req.message = message;
+    
+    //朋友圈
+    req.scene =WXSceneTimeline;
+    
+    [WXApi sendReq:req];
+
+    
+    
     
     
 }

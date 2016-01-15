@@ -79,7 +79,7 @@
     
     
 //    //请求网络数据
-    [self requestModel];
+    //[self requestModel];
     
     
     //tableView的头View

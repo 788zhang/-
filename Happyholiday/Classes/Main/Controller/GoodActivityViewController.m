@@ -72,7 +72,7 @@
     
     manager.responseSerializer.acceptableContentTypes=[NSSet setWithObject:@"text/html"];
 
-    [manager GET:[NSString stringWithFormat:@"%@&page=%ld",KactivityGood,_pageCount] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+    [manager GET:[NSString stringWithFormat:@"%@&page=%ld",KactivityGood,(long)_pageCount] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
        ZPFLog(@"%lld",downloadProgress.totalUnitCount);
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         ZPFLog(@"%@",responseObject);
@@ -222,7 +222,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    ZPFLog(@"%ld",self.allGroupArray.count);
+    ZPFLog(@"%ld",(unsigned long)self.allGroupArray.count);
     
     return self.allGroupArray.count;
     

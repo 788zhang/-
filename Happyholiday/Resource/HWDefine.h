@@ -99,6 +99,24 @@ typedef NS_ENUM(NSInteger, ClassfyListType) {
 
 
 
+
+//微博
+#define kAppkey @"2593994676"
+#define kRedirectURI @"http://sns.whalecloud.com/sina2/callback"
+#define kAppSecret @"7a552857245955d2db216d60cd6083b8"
+
+
+
+//微信
+#define kWeixinAppId  @"wx948ab99ff0970cf6"
+#define kWeixinAppSecret @"824b1cd01b6315c884051128af6b7b7b"
+
+
+
+
+
+
+
 //引入类目
 #import "UIViewController+Common.h"
 

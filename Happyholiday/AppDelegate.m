@@ -11,16 +11,25 @@
 #import "DiscoverViewController.h"
 #import "MineViewController.h"
 
-@interface AppDelegate ()
+@interface AppDelegate ()<WeiboSDKDelegate>
 
 
 
 @end
 
 @implementation AppDelegate
-
+@synthesize wbtoken;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    
+    
+    [WeiboSDK enableDebugMode:YES];
+    [WeiboSDK registerApp:kAppkey];
+    
+    [WXApi registerApp:kWeixinAppId];
+    
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     
@@ -97,18 +106,55 @@
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
 }
+
+
+#pragma mark --- shar微信
+-(void) onReq:(BaseReq*)req{
+    
+    
+}
+
+
+-(void) onResp:(BaseResp*)resp{
+    
+    
+    
+}
+
+
+
+#pragma mark --- share微博
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{
+    
+    
+    return [WeiboSDK handleOpenURL:url delegate:self];
+    return [WXApi handleOpenURL:url delegate:self];
+    
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url{
+    
+    return [WeiboSDK handleOpenURL:url delegate:self];
+    return [WXApi handleOpenURL:url delegate:self];
+}
+
+#pragma mark ---微博代理
+- (void)didReceiveWeiboRequest:(WBBaseRequest *)request
+{
+    
+}
+
+- (void)didReceiveWeiboResponse:(WBBaseResponse *)response{
+    
+    
+    
+}
+
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
